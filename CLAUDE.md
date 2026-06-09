@@ -1,6 +1,6 @@
-@AGENTS.md
-
 # CLAUDE.md
+
+## Existing Technical Rules
 
 # Highest Priority Rule
 
