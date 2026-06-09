@@ -195,16 +195,36 @@
       <tbody>
         <tr><td><strong>GitHub</strong></td><td>Free</td><td><strong>무료</strong></td><td>무제한 저장소</td></tr>
         <tr><td><strong>Vercel</strong></td><td>Pro</td><td><strong>$20 (약 27,000원)</strong></td><td>월 1TB 대역폭, 상업적 이용 가능</td></tr>
-        <tr><td><strong>Supabase</strong></td><td>Pro</td><td><strong>$25 (약 34,000원)</strong></td><td>DB 8GB, 월 250GB 대역폭</td></tr>
+        <tr><td><strong>Supabase</strong></td><td>Free</td><td><strong>무료</strong></td><td>DB 500MB, 월 5GB 트래픽 (현재 운영 규모에 충분)</td></tr>
         <tr><td><strong>Cloudinary</strong></td><td>Free</td><td><strong>무료</strong></td><td>25GB 저장, 월 25GB 트래픽</td></tr>
       </tbody>
     </table>
     <div class="total-box">
       <span class="total-label">월 예상 총 비용</span>
-      <span class="total-amount">$45 <span class="total-sub">(약 61,000원/월)</span></span>
+      <span class="total-amount">$20 <span class="total-sub">(약 27,000원/월)</span></span>
+    </div>
+    <p style="font-size:12px;color:#6b7280;margin-top:10px;">※ Supabase·GitHub·Cloudinary 무료 플랜 사용 기준. 트래픽·데이터 증가 시 Supabase Pro($25/월) 추가 전환 검토.</p>
+
+    <h2>7. 기존 회원 정보 이전</h2>
+
+    <p style="font-size:13px;color:#4b5563;margin-bottom:16px;line-height:1.7;">기존에 가입된 회원 정보(이메일, 비밀번호 등)는 개인 계정에서 회사 계정으로 <strong>이전 가능합니다.</strong></p>
+
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-title">회원 정보 이전 방법</span>
+        <span class="step-meta">데이터 손실: 없음</span>
+      </div>
+      <div class="step-body">
+        <ul class="step-list">
+          <li><span class="step-num">1</span>기존 Supabase 프로젝트에서 회원 데이터 내보내기 (CSV 또는 SQL 파일)</li>
+          <li><span class="step-num">2</span>회사 계정 새 프로젝트에 데이터 가져오기</li>
+          <li><span class="step-num">3</span>기존 회원은 다음 로그인 시 <strong>비밀번호 재설정 이메일</strong> 발송 필요</li>
+        </ul>
+        <div class="warning">⚠️ 보안상 비밀번호 원문은 저장되지 않아 재설정이 필요합니다. 이메일 주소 등 나머지 정보는 그대로 이전됩니다.</div>
+      </div>
     </div>
 
-    <h2>7. 전환 권고안 및 일정</h2>
+    <h2>8. 전환 권고안 및 일정</h2>
     <table>
       <thead><tr><th>일정</th><th>작업 내용</th></tr></thead>
       <tbody>
