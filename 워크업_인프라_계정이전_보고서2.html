@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>워크업 인프라 계정 이전 보고서</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f3f4f6; color: #1a1a1a; }
+    .wrap { max-width: 800px; margin: 40px auto; background: white; padding: 50px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .print-btn { display: flex; justify-content: flex-end; margin-bottom: 24px; }
+    .print-btn button { background: #1A2B4A; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 4px; }
+    .print-btn button:hover { background: #243d5e; }
+
+    .doc-header { border-bottom: 3px solid #1A2B4A; padding-bottom: 20px; margin-bottom: 36px; }
+    .doc-label { font-size: 11px; color: #9ca3af; margin-bottom: 6px; }
+    .doc-title { font-size: 22px; font-weight: 800; color: #1A2B4A; margin-bottom: 6px; }
+    .doc-date { font-size: 13px; color: #6b7280; }
+
+    h2 { font-size: 16px; font-weight: 700; color: #1A2B4A; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 20px; margin-top: 40px; }
+
+    .service-card { border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+    .service-card.blue { background: #eff6ff; border: 1px solid #bfdbfe; }
+    .service-card.purple { background: #f5f3ff; border: 1px solid #ddd6fe; }
+    .service-card.green { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .service-name { font-weight: 700; font-size: 14px; color: #1A2B4A; display: inline; }
+    .service-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; margin-left: 8px; display: inline; }
+    .tag-blue { background: #dbeafe; color: #1d4ed8; }
+    .tag-purple { background: #ede9fe; color: #7c3aed; }
+    .tag-green { background: #dcfce7; color: #16a34a; }
+    .service-desc { font-size: 13px; color: #4b5563; line-height: 1.7; margin-top: 8px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    th { background: #1A2B4A; color: white; text-align: left; padding: 10px 14px; font-weight: 600; }
+    td { padding: 10px 14px; border-bottom: 1px solid #f3f4f6; color: #374151; }
+    tr:nth-child(even) td { background: #f9fafb; }
+    .badge { background: #fff7ed; color: #c2410c; font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+
+    .step-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+    .step-header { background: #f9fafb; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .step-title { font-weight: 700; color: #1A2B4A; font-size: 14px; }
+    .step-meta { font-size: 12px; color: #6b7280; }
+    .step-body { padding: 14px 16px; }
+    .step-list { list-style: none; }
+    .step-list li { display: flex; gap: 10px; font-size: 13px; color: #4b5563; margin-bottom: 8px; align-items: flex-start; }
+    .step-num { background: #1A2B4A; color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .warning { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #c2410c; margin-top: 10px; }
+    .notice { background: #fefce8; border: 1px solid #fde047; border-radius: 6px; padding: 12px 16px; font-size: 13px; color: #92400e; margin-bottom: 16px; }
+
+    .total-box { background: #1A2B4A; color: white; border-radius: 8px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+    .total-label { font-weight: 700; font-size: 14px; }
+    .total-amount { font-size: 22px; font-weight: 800; color: #f4ab1c; }
+    .total-sub { font-size: 13px; color: #9ca3af; font-weight: 400; }
+
+    .doc-footer { border-top: 1px solid #e5e7eb; padding-top: 16px; text-align: center; font-size: 11px; color: #9ca3af; margin-top: 40px; }
+
+    @media print {
+      body { background: white; }
+      .wrap { margin: 0; box-shadow: none; padding: 30px; }
+      .print-btn { display: none; }
+      @page { margin: 15mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="print-btn">
+      <button onclick="window.print()">PDF로 저장</button>
+    </div>
+
+    <div class="doc-header">
+      <p class="doc-label">내부 보고용 문서</p>
+      <h1 class="doc-title">워크업 인프라 계정 이전 보고서</h1>
+      <p class="doc-date">작성일: 2026년 6월 10일</p>
+    </div>
+
+    <h2>1. 사용 중인 서비스 소개</h2>
+
+    <div class="service-card blue">
+      <span class="service-name">GitHub (깃허브)</span>
+      <span class="service-tag tag-blue">코드 저장 창고</span>
+      <p class="service-desc">웹사이트를 만드는 코드(설계도)를 저장하고 관리하는 곳입니다. 중요한 문서를 USB가 아닌 클라우드에 저장해두는 것처럼, 코드를 안전하게 보관하고 변경 이력을 관리합니다. 실수로 파일을 망쳐도 이전 버전으로 되돌릴 수 있습니다.</p>
+    </div>
+
+    <div class="service-card purple">
+      <span class="service-name">Vercel (버셀)</span>
+      <span class="service-tag tag-purple">웹사이트 게시판</span>
+      <p class="service-desc">만든 웹사이트를 인터넷에 올려서 누구나 볼 수 있게 해주는 서비스입니다. 식당으로 비유하면 음식(웹사이트)을 만드는 곳이 아니라, 손님들이 실제로 찾아올 수 있도록 간판을 달고 문을 여는 역할입니다.</p>
+    </div>
+
+    <div class="service-card green">
+      <span class="service-name">Supabase (수파베이스)</span>
+      <span class="service-tag tag-green">데이터 저장 창고</span>
+      <p class="service-desc">웹사이트에서 필요한 데이터(회원 정보, 상품 정보, 주문 내역 등)를 저장하는 데이터베이스입니다. 엑셀 파일처럼 정보를 정리해서 보관하는데, 수천 명이 동시에 접속해도 빠르게 처리할 수 있습니다.</p>
+    </div>
+
+    <h2>2. 현황</h2>
+    <p style="font-size:13px;color:#6b7280;margin-bottom:14px;">현재 아래 3가지 서비스를 개인 계정으로 운영 중입니다.</p>
+    <table>
+      <thead><tr><th>서비스</th><th>하는 일</th><th>현재 상태</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GitHub</strong></td><td>코드 저장 및 관리</td><td><span class="badge">개인 계정</span></td></tr>
+        <tr><td><strong>Vercel</strong></td><td>웹사이트 인터넷 게시</td><td><span class="badge">개인 계정</span></td></tr>
+        <tr><td><strong>Supabase</strong></td><td>데이터 저장 및 관리</td><td><span class="badge">개인 계정</span></td></tr>
+      </tbody>
+    </table>
+
+    <h2>3. 계정 이전 절차</h2>
+
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-title">3-1. GitHub</span>
+        <span class="step-meta">소요시간: 약 30분 &nbsp;|&nbsp; 데이터 손실: 없음</span>
+      </div>
+      <div class="step-body">
+        <ul class="step-list">
+          <li><span class="step-num">1</span>회사 GitHub Organization 생성</li>
+          <li><span class="step-num">2</span>기존 저장소 이전: Settings → Transfer repository → 회사 Organization 선택</li>
+          <li><span class="step-num">3</span>Vercel의 GitHub 연결을 새 Organization으로 재연결</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-title">3-2. Vercel</span>
+        <span class="step-meta">소요시간: 약 30분 &nbsp;|&nbsp; 데이터 손실: 없음</span>
+      </div>
+      <div class="step-body">
+        <ul class="step-list">
+          <li><span class="step-num">1</span>Vercel에서 회사 Team 생성</li>
+          <li><span class="step-num">2</span>기존 프로젝트 이전: Project Settings → Transfer Project → 회사 Team 선택</li>
+          <li><span class="step-num">3</span>GitHub Organization 재연결</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-title">3-3. Supabase</span>
+        <span class="step-meta">소요시간: 약 1~2시간 &nbsp;|&nbsp; 데이터 손실: 없음</span>
+      </div>
+      <div class="step-body">
+        <ul class="step-list">
+          <li><span class="step-num">1</span>회사 Supabase Organization 생성</li>
+          <li><span class="step-num">2</span>기존 DB 내보내기: Project Settings → Database → Backup 다운로드</li>
+          <li><span class="step-num">3</span>회사 계정에 새 프로젝트 생성 후 백업 데이터 가져오기</li>
+          <li><span class="step-num">4</span>웹사이트 연결 정보 새 프로젝트 값으로 교체 및 재배포</li>
+        </ul>
+        <div class="warning">⚠️ 마이그레이션 중 서비스 일시 중단 가능 — 심야 작업 권장</div>
+      </div>
+    </div>
+
+    <h2>4. 이미지 관리 — Cloudinary</h2>
+
+    <div class="service-card blue" style="background:#f0f9ff;border-color:#bae6fd;">
+      <span class="service-name">Cloudinary (클라우디너리)</span>
+      <span class="service-tag" style="background:#e0f2fe;color:#0369a1;">이미지 저장 창고</span>
+      <p class="service-desc">상품 이미지나 사진을 저장하고 웹사이트에 보여주는 전문 서비스입니다. 이미지를 올려두면 URL(인터넷 주소)이 생성되고, 웹사이트는 그 주소를 통해 이미지를 불러와 보여줍니다. 이미지를 자동으로 압축해서 사이트가 빠르게 열리도록 도와줍니다.</p>
+    </div>
+
+    <p style="font-size:13px;color:#6b7280;margin-bottom:14px;">이미지는 Supabase 대신 Cloudinary에 저장하는 것이 일반적입니다. Supabase는 상품명, 가격 등 텍스트 데이터만 저장하고, 이미지 URL(주소)만 기록해두는 방식입니다.</p>
+
+    <table>
+      <thead><tr><th>서비스</th><th>저장하는 내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Supabase</strong></td><td>상품명, 가격, 설명, 이미지 주소(URL) 등 텍스트 데이터</td></tr>
+        <tr><td><strong>Cloudinary</strong></td><td>실제 이미지 파일</td></tr>
+      </tbody>
+    </table>
+
+    <div class="step-card" style="margin-top:16px;">
+      <div class="step-header">
+        <span class="step-title">Cloudinary 무료 플랜</span>
+        <span class="step-meta" style="color:#16a34a;font-weight:600;">무료 사용 가능</span>
+      </div>
+      <div class="step-body">
+        <table style="margin-bottom:0;">
+          <thead><tr><th>항목</th><th>무료 한도</th></tr></thead>
+          <tbody>
+            <tr><td>저장 용량</td><td><strong>25GB</strong></td></tr>
+            <tr><td>월 트래픽</td><td><strong>25GB</strong></td></tr>
+            <tr><td>이미지 변환</td><td><strong>월 25,000회</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:12px;color:#16a34a;margin-top:10px;font-weight:600;">✓ 상품 1,000개 기준 약 1~2GB 사용 예상 — 무료 범위 내 충분히 운영 가능</p>
+      </div>
+    </div>
+
+    <h2>6. 비용 분석</h2>
+    <div class="notice">⚠️ <strong>주의:</strong> Vercel 무료 플랜은 상업적 이용이 약관상 불가합니다. 회사 서비스 운영 시 즉시 유료 전환이 필요합니다.</div>
+    <table>
+      <thead><tr><th>서비스</th><th>플랜</th><th>월 비용</th><th>주요 제공 범위</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GitHub</strong></td><td>Free</td><td><strong>무료</strong></td><td>무제한 저장소</td></tr>
+        <tr><td><strong>Vercel</strong></td><td>Pro</td><td><strong>$20 (약 27,000원)</strong></td><td>월 1TB 대역폭, 상업적 이용 가능</td></tr>
+        <tr><td><strong>Supabase</strong></td><td>Free</td><td><strong>무료</strong></td><td>DB 500MB, 월 5GB 트래픽 (현재 운영 규모에 충분)</td></tr>
+        <tr><td><strong>Cloudinary</strong></td><td>Free</td><td><strong>무료</strong></td><td>25GB 저장, 월 25GB 트래픽</td></tr>
+      </tbody>
+    </table>
+    <div class="total-box">
+      <span class="total-label">월 예상 총 비용</span>
+      <span class="total-amount">$20 <span class="total-sub">(약 27,000원/월)</span></span>
+    </div>
+    <p style="font-size:12px;color:#6b7280;margin-top:10px;">※ Supabase·GitHub·Cloudinary 무료 플랜 사용 기준. 트래픽·데이터 증가 시 Supabase Pro($25/월) 추가 전환 검토.</p>
+
+    <h2>7. 기존 회원 정보 이전</h2>
+
+    <p style="font-size:13px;color:#4b5563;margin-bottom:16px;line-height:1.7;">기존에 가입된 회원 정보(이메일, 비밀번호 등)는 개인 계정에서 회사 계정으로 <strong>이전 가능합니다.</strong></p>
+
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-title">회원 정보 이전 방법</span>
+        <span class="step-meta">데이터 손실: 없음</span>
+      </div>
+      <div class="step-body">
+        <ul class="step-list">
+          <li><span class="step-num">1</span>기존 Supabase 프로젝트에서 회원 데이터 내보내기 (CSV 또는 SQL 파일)</li>
+          <li><span class="step-num">2</span>회사 계정 새 프로젝트에 데이터 가져오기</li>
+          <li><span class="step-num">3</span>기존 회원은 다음 로그인 시 <strong>비밀번호 재설정 이메일</strong> 발송 필요</li>
+        </ul>
+        <div class="warning">⚠️ 보안상 비밀번호 원문은 저장되지 않아 재설정이 필요합니다. 이메일 주소 등 나머지 정보는 그대로 이전됩니다.</div>
+      </div>
+    </div>
+
+    <h2>8. 기존 시스템(카페24 등) 대비 장점</h2>
+
+    <p style="font-size:13px;color:#4b5563;margin-bottom:16px;line-height:1.7;">카페24, 고도몰 같은 기존 쇼핑몰 호스팅 서비스와 비교했을 때 현재 세팅(GitHub + Vercel + Supabase + Cloudinary)이 갖는 주요 장점은 다음과 같습니다.</p>
+
+    <table>
+      <thead><tr><th>항목</th><th>카페24 등 기존 시스템</th><th>현재 세팅</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>비용</strong></td>
+          <td>월 3~10만원 (호스팅 + 부가서비스)</td>
+          <td><strong>월 약 27,000원</strong> (Vercel Pro만 유료)</td>
+        </tr>
+        <tr>
+          <td><strong>디자인 자유도</strong></td>
+          <td>템플릿 기반, 커스텀 제한 많음</td>
+          <td><strong>100% 자유로운 디자인</strong> 가능</td>
+        </tr>
+        <tr>
+          <td><strong>속도</strong></td>
+          <td>공용 서버로 느릴 수 있음</td>
+          <td><strong>전세계 CDN</strong>으로 빠른 로딩</td>
+        </tr>
+        <tr>
+          <td><strong>기능 확장</strong></td>
+          <td>플랫폼 제공 기능만 사용 가능</td>
+          <td><strong>원하는 기능 자유롭게 추가</strong> 가능</td>
+        </tr>
+        <tr>
+          <td><strong>코드 소유권</strong></td>
+          <td>플랫폼 종속 (이전 어려움)</td>
+          <td><strong>코드 100% 회사 소유</strong></td>
+        </tr>
+        <tr>
+          <td><strong>도메인 연결</strong></td>
+          <td>가능 (별도 비용 발생하는 경우 있음)</td>
+          <td><strong>무료로 연결</strong> 가능</td>
+        </tr>
+        <tr>
+          <td><strong>트래픽 급증 대응</strong></td>
+          <td>플랜 업그레이드 필요, 느린 대응</td>
+          <td><strong>자동 확장</strong>, 트래픽 몰려도 안정적</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="step-card" style="margin-top:4px;">
+      <div class="step-header">
+        <span class="step-title">핵심 요약</span>
+      </div>
+      <div class="step-body">
+        <ul class="step-list">
+          <li><span class="step-num">✓</span><span><strong>더 저렴합니다.</strong> 기존 호스팅 대비 비용이 낮고, 기능이 늘어도 추가 과금이 적습니다.</span></li>
+          <li><span class="step-num">✓</span><span><strong>브랜드에 맞는 디자인이 가능합니다.</strong> 템플릿 제약 없이 워크업만의 디자인을 자유롭게 구현할 수 있습니다.</span></li>
+          <li><span class="step-num">✓</span><span><strong>회사 자산입니다.</strong> 플랫폼을 떠나도 코드와 데이터는 모두 회사 소유로 유지됩니다.</span></li>
+          <li><span class="step-num">✓</span><span><strong>확장이 쉽습니다.</strong> 회원가입, 주문, 재고 관리 등 기능을 필요할 때마다 추가할 수 있습니다.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>9. 전환 권고안 및 일정</h2>
+    <table>
+      <thead><tr><th>일정</th><th>작업 내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1일차 (즉시)</strong></td><td>GitHub Organization 생성 및 저장소 이전</td></tr>
+        <tr><td><strong>1일차 (즉시)</strong></td><td>Vercel Team 생성, 프로젝트 이전 및 Pro 결제</td></tr>
+        <tr><td><strong>2일차 (심야)</strong></td><td>Supabase 데이터 마이그레이션</td></tr>
+        <tr><td><strong>2일차</strong></td><td>연결 정보 업데이트 및 정상 작동 확인</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:#6b7280;margin-top:10px;">총 예상 소요 기간: <strong>2일</strong></p>
+
+    <div class="doc-footer">
+      본 문서는 내부 검토용이며, 비용은 환율 변동에 따라 달라질 수 있습니다.
+    </div>
+
+  </div>
+</body>
+</html>
