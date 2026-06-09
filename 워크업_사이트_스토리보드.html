@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WORKUP 웹사이트 스토리보드</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f3f4f6; color: #1a1a1a; }
+    .wrap { max-width: 960px; margin: 40px auto; padding: 0 20px 60px; }
+
+    .print-btn { display: flex; justify-content: flex-end; margin-bottom: 24px; }
+    .print-btn button { background: #1A2B4A; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 4px; }
+    .print-btn button:hover { background: #243d5e; }
+
+    /* 문서 헤더 */
+    .doc-header { background: #1A2B4A; color: white; padding: 32px 40px; margin-bottom: 40px; }
+    .doc-label { font-size: 11px; color: #f4ab1c; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .doc-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+    .doc-sub { font-size: 13px; color: #94a3b8; }
+
+    /* 사이트맵 */
+    .sitemap { background: white; border-radius: 12px; padding: 28px; margin-bottom: 40px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .sitemap h2 { font-size: 15px; font-weight: 700; color: #1A2B4A; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f4ab1c; }
+    .sitemap-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .sitemap-node { background: #1A2B4A; color: white; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .sitemap-node.sub { background: #f4ab1c; color: #1A2B4A; font-size: 12px; padding: 6px 12px; }
+    .sitemap-arrow { color: #94a3b8; font-size: 18px; }
+
+    /* 페이지 섹션 */
+    .page-section { background: white; border-radius: 12px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .page-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; }
+    .page-num { background: #1A2B4A; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .page-title { font-size: 16px; font-weight: 700; color: #1A2B4A; }
+    .page-url { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+    .page-body { padding: 20px 24px; }
+
+    /* 섹션 카드들 */
+    .sections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .section-card { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+    .section-card-header { background: #f8fafc; padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
+    .section-card-label { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+    .section-card-title { font-size: 13px; font-weight: 700; color: #1A2B4A; margin-top: 2px; }
+    .section-card-body { padding: 10px 12px; }
+    .section-card-body ul { list-style: none; }
+    .section-card-body ul li { font-size: 12px; color: #64748b; padding: 3px 0; border-bottom: 1px solid #f1f5f9; display: flex; align-items: flex-start; gap: 6px; }
+    .section-card-body ul li:last-child { border-bottom: none; }
+    .section-card-body ul li::before { content: "·"; color: #f4ab1c; font-weight: 700; flex-shrink: 0; }
+
+    /* 페이지 목적 */
+    .page-purpose { background: #f8fafc; border-left: 3px solid #f4ab1c; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12px; color: #475569; line-height: 1.6; margin-top: 4px; }
+
+    /* 사용자 흐름 */
+    .flow-section { background: white; border-radius: 12px; padding: 28px; margin-bottom: 32px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .flow-section h2 { font-size: 15px; font-weight: 700; color: #1A2B4A; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f4ab1c; }
+    .flow-path { display: flex; align-items: center; gap: 0; margin-bottom: 14px; flex-wrap: wrap; }
+    .flow-step { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; font-size: 12px; border-radius: 6px; }
+    .flow-step strong { display: block; font-size: 13px; color: #1A2B4A; margin-bottom: 2px; }
+    .flow-step span { color: #94a3b8; }
+    .flow-arrow { color: #f4ab1c; font-size: 20px; font-weight: 700; padding: 0 8px; }
+
+    /* 네비게이션 구조 */
+    .nav-bar { background: #1A2B4A; border-radius: 8px; padding: 12px 20px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+    .nav-logo { color: #f4ab1c; font-weight: 800; font-size: 14px; margin-right: 16px; }
+    .nav-item { color: white; font-size: 12px; padding: 4px 10px; border-radius: 4px; }
+    .nav-item.active { background: #f4ab1c; color: #1A2B4A; font-weight: 700; }
+    .nav-right { margin-left: auto; display: flex; gap: 8px; }
+    .nav-right span { color: #94a3b8; font-size: 11px; }
+
+    .doc-footer { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 40px; }
+
+    @media print {
+      body { background: white; }
+      .wrap { margin: 0; padding: 20px; }
+      .print-btn { display: none; }
+      .page-section, .sitemap, .flow-section { box-shadow: none; break-inside: avoid; }
+      @page { margin: 15mm; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="print-btn">
+    <button onclick="window.print()">PDF로 저장</button>
+  </div>
+
+  <!-- 문서 헤더 -->
+  <div class="doc-header">
+    <p class="doc-label">Storyboard Document</p>
+    <h1 class="doc-title">WORKUP 웹사이트 스토리보드</h1>
+    <p class="doc-sub">작성일: 2026년 6월 10일 &nbsp;|&nbsp; workup-young83.vercel.app</p>
+  </div>
+
+  <!-- 네비게이션 구조 -->
+  <div class="sitemap">
+    <h2>공통 네비게이션 구조</h2>
+    <div class="nav-bar">
+      <span class="nav-logo">WORKUP</span>
+      <span class="nav-item">Products</span>
+      <span class="nav-item">Store</span>
+      <span class="nav-item">Story</span>
+      <span class="nav-item">People</span>
+      <span class="nav-item">Field Test</span>
+      <div class="nav-right">
+        <span>카탈로그</span>
+        <span>파트너십 문의</span>
+        <span>🛒</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#64748b;">모든 페이지 상단에 공통으로 표시되는 메뉴입니다. 로고 클릭 시 홈으로 이동합니다.</p>
+  </div>
+
+  <!-- 사이트맵 -->
+  <div class="sitemap">
+    <h2>전체 페이지 구성</h2>
+    <div class="sitemap-flow">
+      <div class="sitemap-node">홈 (Home)</div>
+      <div class="sitemap-arrow">→</div>
+      <div class="sitemap-node">Products</div>
+      <div class="sitemap-arrow">→</div>
+      <div class="sitemap-node sub">상품 상세</div>
+      <div class="sitemap-arrow">→</div>
+      <div class="sitemap-node sub">장바구니</div>
+    </div>
+    <div style="height:10px;"></div>
+    <div class="sitemap-flow">
+      <div class="sitemap-node">Store</div>
+      <div class="sitemap-arrow">→</div>
+      <div class="sitemap-node">Story</div>
+      <div class="sitemap-arrow">→</div>
+      <div class="sitemap-node">People</div>
+      <div class="sitemap-arrow">→</div>
+      <div class="sitemap-node">Field Test</div>
+    </div>
+  </div>
+
+  <!-- 페이지 1: 홈 -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-num">1</div>
+      <div>
+        <div class="page-title">홈 (Home)</div>
+        <div class="page-url">workup-young83.vercel.app/</div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 1</div>
+            <div class="section-card-title">히어로 배너</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>브랜드 메인 카피</li>
+              <li>"일하는 사람이 제일 멋있다"</li>
+              <li>컬렉션 보기 버튼</li>
+              <li>브랜드 스토리 링크</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 2</div>
+            <div class="section-card-title">신상품</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>스트레치 카고 팬츠</li>
+              <li>쿨링 반팔 티셔츠</li>
+              <li>반사 안전 재킷</li>
+              <li>총 10개 신상품</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 3</div>
+            <div class="section-card-title">라인업 소개</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>SITE Line (현장 기능복)</li>
+              <li>DAILY Line (일상 전환)</li>
+              <li>Safety Line (안전 기능복)</li>
+              <li>Accessories</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 4</div>
+            <div class="section-card-title">코디 세트</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>현장→일상 코디 세트</li>
+              <li>맞춤 주문 라인 소개</li>
+              <li>고객 후기</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="page-purpose">
+        <strong>페이지 목적:</strong> 브랜드 첫인상을 전달하고 상품 라인업과 브랜드 가치를 소개합니다. 방문자가 상품 페이지 또는 브랜드 스토리로 자연스럽게 이동하도록 유도합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 페이지 2: Products -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-num">2</div>
+      <div>
+        <div class="page-title">Products (상품 목록)</div>
+        <div class="page-url">workup-young83.vercel.app/products</div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 1</div>
+            <div class="section-card-title">카테고리 필터</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>전체 / SITE / DAILY</li>
+              <li>PRO / Safety</li>
+              <li>Accessories</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 2</div>
+            <div class="section-card-title">상품 그리드</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>상품 이미지</li>
+              <li>상품명 / 가격</li>
+              <li>상세 페이지 이동</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 3</div>
+            <div class="section-card-title">상품 상세</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>상세 이미지</li>
+              <li>사이즈 선택</li>
+              <li>장바구니 담기</li>
+              <li>소재 / 기능 설명</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="page-purpose">
+        <strong>페이지 목적:</strong> 전체 상품을 카테고리별로 탐색하고 원하는 상품을 선택해 구매로 이어지도록 합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 페이지 3: Store -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-num">3</div>
+      <div>
+        <div class="page-title">Store (매장 찾기)</div>
+        <div class="page-url">workup-young83.vercel.app/store</div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 1</div>
+            <div class="section-card-title">헤더 카피</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>"직접 입어봐야 압니다"</li>
+              <li>전국 154개 매장 안내</li>
+              <li>방문 전 체크리스트</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 2</div>
+            <div class="section-card-title">지도</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>전체 매장 지도</li>
+              <li>특정 매장 선택 시 단독 지도</li>
+              <li>← 전체 매장 보기 버튼</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 3</div>
+            <div class="section-card-title">매장 목록</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>근처 매장 찾기</li>
+              <li>지역/매장명 검색</li>
+              <li>전화 / 카카오 / 길찾기</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="page-purpose">
+        <strong>페이지 목적:</strong> 전국 154개 매장 위치를 지도와 목록으로 안내하고, 방문 전 필요한 정보(전화, 영업시간, 길찾기)를 제공합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 페이지 4: Story -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-num">4</div>
+      <div>
+        <div class="page-title">Story (브랜드 스토리)</div>
+        <div class="page-url">workup-young83.vercel.app/story</div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 1</div>
+            <div class="section-card-title">브랜드 철학</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>Work Life Wear 소개</li>
+              <li>일하는 사람을 위한 옷</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 2</div>
+            <div class="section-card-title">4가지 핵심 가치</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>기능성</li>
+              <li>내구성</li>
+              <li>합리적 가격</li>
+              <li>다용도성</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 3</div>
+            <div class="section-card-title">창업 스토리</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>브랜드 설립 배경</li>
+              <li>매장 방문 유도</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="page-purpose">
+        <strong>페이지 목적:</strong> 브랜드의 탄생 배경과 가치관을 전달해 고객의 공감과 신뢰를 형성합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 페이지 5: People -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-num">5</div>
+      <div>
+        <div class="page-title">People (고객 이야기)</div>
+        <div class="page-url">workup-young83.vercel.app/people</div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 1</div>
+            <div class="section-card-title">직업별 인터뷰</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>건설 현장 종사자</li>
+              <li>배달 / 물류</li>
+              <li>카페 / 편의점</li>
+              <li>농업 / 시설 관리</li>
+              <li>총 9개 직업군</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 2</div>
+            <div class="section-card-title">고객 후기</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>실제 착용 후기</li>
+              <li>관련 상품 링크</li>
+              <li>인스타그램 연결</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="page-purpose">
+        <strong>페이지 목적:</strong> 실제 고객의 목소리로 제품의 실용성을 증명하고, 다양한 직업군의 공감을 이끌어 구매 신뢰도를 높입니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 페이지 6: Field Test -->
+  <div class="page-section">
+    <div class="page-header">
+      <div class="page-num">6</div>
+      <div>
+        <div class="page-title">Field Test</div>
+        <div class="page-url">workup-young83.vercel.app/field-test</div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="sections-grid">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-label">Section 1</div>
+            <div class="section-card-title">현장 테스트 결과</div>
+          </div>
+          <div class="section-card-body">
+            <ul>
+              <li>실제 현장 착용 테스트</li>
+              <li>기능별 성능 검증</li>
+              <li>관련 상품 연결</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="page-purpose">
+        <strong>페이지 목적:</strong> 제품이 실제 현장에서 검증됐음을 보여주어 기능성에 대한 신뢰를 높입니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 사용자 흐름 -->
+  <div class="flow-section">
+    <h2>주요 사용자 흐름</h2>
+
+    <p style="font-size:12px;color:#64748b;margin-bottom:16px;">사이트 방문자가 목적에 따라 이동하는 대표적인 경로입니다.</p>
+
+    <p style="font-size:12px;font-weight:700;color:#1A2B4A;margin-bottom:8px;">① 상품 구매 흐름</p>
+    <div class="flow-path" style="margin-bottom:20px;">
+      <div class="flow-step"><strong>홈</strong><span>신상품 확인</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>Products</strong><span>카테고리 탐색</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>상품 상세</strong><span>사이즈 선택</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>장바구니</strong><span>구매 완료</span></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:700;color:#1A2B4A;margin-bottom:8px;">② 매장 방문 흐름</p>
+    <div class="flow-path" style="margin-bottom:20px;">
+      <div class="flow-step"><strong>홈</strong><span>브랜드 탐색</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>Store</strong><span>근처 매장 검색</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>매장 선택</strong><span>전화 / 길찾기</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>매장 방문</strong><span>직접 피팅</span></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:700;color:#1A2B4A;margin-bottom:8px;">③ 브랜드 공감 흐름</p>
+    <div class="flow-path">
+      <div class="flow-step"><strong>홈</strong><span>첫 방문</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>Story</strong><span>브랜드 가치 확인</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>People</strong><span>고객 후기 확인</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>Products</strong><span>상품 탐색</span></div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    본 문서는 내부 보고용이며 WORKUP 웹사이트(workup-young83.vercel.app) 기준으로 작성되었습니다. &nbsp;|&nbsp; 2026년 6월 10일
+  </div>
+
+</div>
+</body>
+</html>
